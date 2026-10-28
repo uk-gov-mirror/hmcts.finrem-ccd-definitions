@@ -40,7 +40,7 @@ const loginAndOpenCase = async (
 
 const createProcessScannedDocumentTask = async (): Promise<string> => {
   const caseId = await ConsentedCaseFactory
-    .createConsentedCaseUpToApplicationPaymentSubmission();
+      .createConsentedCase();
 
   await ConsentedEventApi.caseWorkerAttachScannedDocuments(caseId, false);
 
