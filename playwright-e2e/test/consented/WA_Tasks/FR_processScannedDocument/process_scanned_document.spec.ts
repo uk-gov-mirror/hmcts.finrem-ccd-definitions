@@ -40,7 +40,7 @@ const loginAndOpenCase = async (
 
 const createProcessScannedDocumentTask = async (): Promise<string> => {
   const caseId = await ConsentedCaseFactory
-      .createConsentedCase();
+      .createConsentedCaseUpToApplicationPaymentSubmission();
 
   await ConsentedEventApi.caseWorkerAttachScannedDocuments(caseId, false);
 
@@ -65,6 +65,7 @@ test.describe('Process scanned document task tests', () => {
           manageCaseDashboardPage
         };
         const caseId = await createProcessScannedDocumentTask();
+        await taskUiChecks.submitTask("Check Help With Fees", "HWF Application Accepted")
 
         const completeTask = async (
           action: TaskCompletionAction
@@ -124,6 +125,7 @@ test.describe('Process scanned document task tests', () => {
       taskUiChecks
     }) => {
       const caseId = await createProcessScannedDocumentTask();
+      await taskUiChecks.submitTask("Check Help With Fees", "HWF Application Accepted")
 
       await loginAndOpenCase(
         config.ctsc_admin,
@@ -164,6 +166,7 @@ test.describe('Process scanned document task tests', () => {
         manageCaseDashboardPage
       };
       const caseId = await createProcessScannedDocumentTask();
+      await taskUiChecks.submitTask("Check Help With Fees", "HWF Application Accepted")
 
       await test.step('Team Leader assigns the task to themselves', async () => {
         await loginAndOpenCase(

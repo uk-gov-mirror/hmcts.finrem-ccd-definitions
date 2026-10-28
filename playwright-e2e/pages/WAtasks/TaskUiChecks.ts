@@ -216,6 +216,25 @@ export class TaskUiChecks {
     await this.assertOnlyManagementActions(actions);
   }
 
+  async submitTask(taskName: string, completionEventName: string): Promise<void> {
+    await this.waitForTaskVisibility(taskName, true);
+
+    const task = this.page.locator('exui-case-task').filter({ hasText: taskName });
+    const completionLink = task.locator(completionEventName);
+
+    await expect(completionLink).toBeVisible();
+    await completionLink.click();
+    await expect(completionLink).not.toBeVisible();
+
+    const confirmationButton = this.page.locator('#submit-button');
+    await expect(confirmationButton).toBeVisible();
+    await confirmationButton.click();
+
+    // TODO: add check for more pages
+
+    await this.assertTaskNotVisible(taskName);
+  }
+
   private async waitForTaskVisibility(
     taskName: string,
     shouldBeVisible: boolean
